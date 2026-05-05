@@ -28,3 +28,6 @@ wasco-water-billing/
 └── README.md
 ```
 
+## Deployment
+- Client: GitHub Pages (settings > Pages > main/root)
+- Server: Render.com (env: DATABASE_URL, FIREBASE_DATABASE_URL, JWT_SECRET=your_secret)

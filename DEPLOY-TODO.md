@@ -1,12 +1,13 @@
 # GitHub + Render Deployment TODO
 
 ## Steps:
-- [x] 1. Create .gitignore (secrets safe)
-- [x] 2. git init (done)
-- [ ] 3. Complete gh auth login (terminal running)
-- [ ] 4. git add . &amp;&amp; git commit -m "Initial commit: Wasco Water Billing" &amp;&amp; git push
-- [ ] 5. Enable GitHub Pages (client hosting: https://MoabiTech.github.io/wasco/)
-- [ ] 6. Deploy server to Render (https://render.com - Node, DATABASE_URL, etc.)
-- [ ] 7. Test &amp; update README
+- [x] 1. Create .gitignore ✓
+- [x] 2. git init ✓
+- [ ] 3. gh auth (optional, running)
+- [x] 4. Committed 32 files ✓
+- [ ] 5. Resolve pull & push to https://github.com/MoabiTech/wasco
+- [ ] 6. GitHub Pages: Settings > Pages > Source: main / (root)
+- [ ] 7. Render: New Web Service > GitHub > wasco > Node > Build: none > Start: npm start > Env vars (DATABASE_URL=neon..., FIREBASE..., JWT_SECRET...)
+- [ ] 8. Test client at https://moabitech.github.io/wasco , server at render URL
 
-**Status:** Git init ✓, auth pending.
+**Status:** Commit done, pull/push next. Repo: https://github.com/MoabiTech/wasco
