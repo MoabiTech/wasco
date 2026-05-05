@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WASCO - Water & Sewerage Company | Lesotho</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Firebase Client SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+      <div class="nav-brand">
+        <i class="fas fa-tint"></i>
+        <span>WASCO</span>
+        <small>Water & Sewerage Company</small>
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="#" data-page="home" class="nav-link active">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <a href="#" data-page="services" class="nav-link">
+          <i class="fas fa-concierge-bell"></i> Services
+        </a>
+        <a href="#" data-page="rates" class="nav-link">
+          <i class="fas fa-tags"></i> Rates
+        </a>
+        <!-- Authenticated links -->
+        <a href="#" data-page="dashboard" class="nav-link auth-only" style="display:none;">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        <a href="#" data-page="bills" class="nav-link auth-only customer-only" style="display:none;">
+          <i class="fas fa-file-invoice-dollar"></i> My Bills
+        </a>
+        <a href="#" data-page="payments" class="nav-link auth-only customer-only" style="display:none;">
+          <i class="fas fa-credit-card"></i> Payments
+        </a>
+        <a href="#" data-page="admin" class="nav-link auth-only admin-only" style="display:none;">
+          <i class="fas fa-cog"></i> Admin
+        </a>
+        <a href="#" data-page="manager" class="nav-link auth-only manager-only" style="display:none;">
+          <i class="fas fa-chart-bar"></i> Reports
+        </a>
+      </div>
+      <div class="nav-auth">
+        <div id="authButtons" class="guest-only">
+          <button class="btn btn-outline" onclick="showModal('loginModal')">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+          <button class="btn btn-primary" onclick="showModal('registerModal')">
+            <i class="fas fa-user-plus"></i> Register
+          </button>
+        </div>
+        <div id="userMenu" class="auth-only" style="display:none;">
+          <span class="user-greeting">
+            <i class="fas fa-user-circle"></i>
+            <span id="userDisplayName"></span>
+          </span>
+          <button class="btn btn-outline btn-sm" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+      <button class="nav-toggle" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="mainContent">
+      <!-- HOME PAGE -->
+      <section id="page-home" class="page active">
+        <div class="hero">
+          <div class="hero-content">
+            <h1>Welcome to WASCO</h1>
+            <h2>Water & Sewerage Company of Lesotho</h2>
+            <p>Managing water resources across all 10 districts of Lesotho. 
+               View your bills, make payments, and track your water usage online.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary btn-lg" onclick="showModal('loginModal')">
+                <i class="fas fa-sign-in-alt"></i> Customer Portal
+              </button>
+              <button class="btn btn-outline btn-lg" onclick="navigateTo('services')">
+                <i class="fas fa-info-circle"></i> Our Services
+              </button>
+            </div>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-card">
+              <i class="fas fa-map-marker-alt"></i>
+              <h3>10</h3>
+              <p>Districts Served</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-users"></i>
+              <h3 id="totalCustomers">0</h3>
+              <p>Active Customers</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-tint"></i>
+              <h3>24/7</h3>
+              <p>Water Supply</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-database"></i>
+              <h3>2</h3>
+              <p>Distributed DBs</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="features-section">
+          <h2>System Features</h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <i class="fas fa-file-invoice-dollar"></i>
+              <h3>Online Billing</h3>
+              <p>View and pay your water bills online. Tiered billing rates based on consumption.</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-chart-line"></i>
+              <h3>Usage Tracking</h3>
+              <p>Monitor your water consumption patterns with detailed monthly reports.</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-bell"></i>
+              <h3>Notifications</h3>
+              <p>Receive bill notifications, payment confirmations, and service updates.</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-tools"></i>
+              <h3>Report Leaks</h3>
+              <p>Report water leakages in your area for quick repair response.</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-server"></i>
+              <h3>Distributed Database</h3>
+              <p>Data stored across PostgreSQL and Firebase for reliability and speed.</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-shield-alt"></i>
+              <h3>Secure Payments</h3>
+              <p>Multiple payment methods with secure transaction processing.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES PAGE -->
+      <section id="page-services" class="page">
+        <div class="page-header">
+          <h1><i class="fas fa-concierge-bell"></i> Our Services</h1>
+          <p>Water and Sewerage services available across Lesotho</p>
+        </div>
+        <div class="services-container" id="servicesContainer">
+          <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading services...</div>
+        </div>
+      </section>
+
+      <!-- RATES PAGE -->
+      <section id="page-rates" class="page">
+        <div class="page-header">
+          <h1><i class="fas fa-tags"></i> Billing Rates</h1>
+          <p>Current water and sewerage tariff structure</p>
+        </div>
+        <div class="rates-container" id="ratesContainer">
+          <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading rates...</div>
+        </div>
+      </section>
+
+      <!-- DASHBOARD PAGE -->
+      <section id="page-dashboard" class="page">
+        <div class="page-header">
+          <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+          <p>Welcome back, <span id="dashboardUserName"></span></p>
+        </div>
+        <div id="dashboardContent">
+          <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading dashboard...</div>
+        </div>
+      </section>
+
+      <!-- MY BILLS PAGE -->
+      <section id="page-bills" class="page">
+        <div class="page-header">
+          <h1><i class="fas fa-file-invoice-dollar"></i> My Bills</h1>
+          <p>View your water bills and payment status</p>
+        </div>
+        <div id="billsContent">
+          <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading bills...</div>
+        </div>
+      </section>
+
+      <!-- PAYMENTS PAGE -->
+      <section id="page-payments" class="page">
+        <div class="page-header">
+          <h1><i class="fas fa-credit-card"></i> Payments</h1>
+          <p>Make payments and view payment history</p>
+        </div>
+        <div id="paymentsContent">
+          <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading payments...</div>
+        </div>
+      </section>
+
+      <!-- ADMIN PAGE -->
+      <section id="page-admin" class="page">
+        <div class="page-header">
+          <h1><i class="fas fa-cog"></i> Administration</h1>
+          <p>Manage customers, billing, and system settings</p>
+        </div>
+        <div class="admin-tabs">
+          <button class="tab-btn active" data-tab="admin-customers">
+            <i class="fas fa-users"></i> Customers
+          </button>
+          <button class="tab-btn" data-tab="admin-billing">
+            <i class="fas fa-file-invoice"></i> Billing
+          </button>
+          <button class="tab-btn" data-tab="admin-rates">
+            <i class="fas fa-tags"></i> Rates
+          </button>
+          <button class="tab-btn" data-tab="admin-notifications">
+            <i class="fas fa-bell"></i> Notifications
+          </button>
+          <button class="tab-btn" data-tab="admin-users">
+            <i class="fas fa-user-cog"></i> Users
+          </button>
+          <button class="tab-btn" data-tab="admin-sync">
+            <i class="fas fa-sync"></i> DB Sync
+          </button>
+        </div>
+        <div id="adminContent">
+          <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+        </div>
+      </section>
+
+      <!-- MANAGER/REPORTS PAGE -->
+      <section id="page-manager" class="page">
+        <div class="page-header">
+          <h1><i class="fas fa-chart-bar"></i> Reports & Analytics</h1>
+          <p>Water usage insights and financial reports</p>
+        </div>
+        <div class="report-tabs">
+          <button class="tab-btn active" data-tab="report-overview">
+            <i class="fas fa-tachometer-alt"></i> Overview
+          </button>
+          <button class="tab-btn" data-tab="report-usage">
+            <i class="fas fa-chart-line"></i> Usage Patterns
+          </button>
+          <button class="tab-btn" data-tab="report-revenue">
+            <i class="fas fa-money-bill-wave"></i> Revenue
+          </button>
+          <button class="tab-btn" data-tab="report-outstanding">
+            <i class="fas fa-exclamation-triangle"></i> Outstanding
+          </button>
+          <button class="tab-btn" data-tab="report-districts">
+            <i class="fas fa-map"></i> Districts
+          </button>
+        </div>
+        <div id="managerContent">
+          <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading reports...</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><i class="fas fa-tint"></i> WASCO</h3>
+          <p>Water and Sewerage Company of Lesotho</p>
+          <p>Providing clean water to all districts since 2010</p>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p><i class="fas fa-phone"></i> +266 2231 2449</p>
+          <p><i class="fas fa-envelope"></i> info@wasco.co.ls</p>
+          <p><i class="fas fa-map-marker-alt"></i> Maseru, Lesotho</p>
+        </div>
+        <div class="footer-section">
+          <h3>Database Architecture</h3>
+          <p><i class="fas fa-database"></i> PostgreSQL (Neon)</p>
+          <p><i class="fas fa-fire"></i> Firebase Realtime DB</p>
+          <p><i class="fas fa-sync"></i> Dual Sync Active</p>
+          <div id="dbStatus" class="db-status">
+            <span class="status-dot green"></span> Systems Online
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 WASCO Lesotho - Distributed Online Water Bill Management System</p>
+      </div>
+    </footer>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-sign-in-alt"></i> Login to WASCO</h2>
+          <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+        </div>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Username or Email</label>
+            <input type="text" id="loginUsername" required placeholder="Enter username or email">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="loginPassword" required placeholder="Enter password">
+          </div>
+          <div id="loginError" class="error-message" style="display:none;"></div>
+          <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+          <p class="modal-footer-text">
+            Don't have an account? 
+            <a href="#" onclick="closeModal('loginModal'); showModal('registerModal');">Register here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div id="registerModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-user-plus"></i> Create Account</h2>
+          <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+        </div>
+        <form id="registerForm" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Username</label>
+            <input type="text" id="regUsername" required placeholder="Choose a username" minlength="3">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="regEmail" required placeholder="Enter your email">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="regPassword" required placeholder="Create a password" minlength="6">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Confirm Password</label>
+            <input type="password" id="regConfirmPassword" required placeholder="Confirm password">
+          </div>
+          <div id="registerError" class="error-message" style="display:none;"></div>
+          <button type="submit" class="btn btn-primary btn-full" id="registerBtn">
+            <i class="fas fa-user-plus"></i> Create Account
+          </button>
+          <p class="modal-footer-text">
+            Already have an account? 
+            <a href="#" onclick="closeModal('registerModal'); showModal('loginModal');">Login here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- PAYMENT MODAL -->
+    <div id="paymentModal" class="modal">
+      <div class="modal-content modal-lg">
+        <div class="modal-header">
+          <h2><i class="fas fa-credit-card"></i> Make Payment</h2>
+          <button class="modal-close" onclick="closeModal('paymentModal')">&times;</button>
+        </div>
+        <form id="paymentForm" onsubmit="handlePayment(event)">
+          <div class="payment-details" id="paymentDetails"></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Payment Amount (Maloti)</label>
+              <input type="number" id="payAmount" required min="1" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>Payment Method</label>
+              <select id="payMethod" required>
+                <option value="mobile_money">Mobile Money (M-Pesa/EcoCash)</option>
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="online">Online/Card Payment</option>
+                <option value="cash">Cash</option>
+              </select>
+            </div>
+          </div>
+          <div id="cardFields" style="display:none;">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Card Number</label>
+                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Expiry Date</label>
+                <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+              </div>
+              <div class="form-group">
+                <label>CVV</label>
+                <input type="text" id="cardCvv" placeholder="123" maxlength="4">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Notes (Optional)</label>
+            <textarea id="payNotes" placeholder="Any additional notes"></textarea>
+          </div>
+          <input type="hidden" id="payBillId">
+          <div id="paymentError" class="error-message" style="display:none;"></div>
+          <button type="submit" class="btn btn-primary btn-full" id="payBtn">
+            <i class="fas fa-check-circle"></i> Process Payment
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toastContainer" class="toast-container"></div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
