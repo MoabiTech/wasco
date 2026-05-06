@@ -1,6 +1,6 @@
 # WASCO Water Billing System
 
-A full-stack web application for WASCO (Water and Sewerage Company) water billing management.
+A full_stack web application for WASCO (Water and Sewerage Company) water billing management.
 
 ## Features
 - Customer registration and management
@@ -23,8 +23,8 @@ A full-stack web application for WASCO (Water and Sewerage Company) water billin
 ## Structure
 ```
 wasco-water-billing/
-├── server/          # Node.js API
-├── client/          # Frontend
+├── server/          
+├── client/         
 └── README.md
 ```
 
