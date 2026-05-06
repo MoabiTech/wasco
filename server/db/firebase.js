@@ -3,9 +3,10 @@ require('dotenv').config();
 
 const serviceAccount = require('../serviceAccountKey.json');
 
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.FIREBASE_DATABASE_URL || "https://waterbill-8df52-default-rtdb.firebaseio.com"
+  databaseURL: process.env.FIREBASE_DATABASE_URL
 });
 
 const db = admin.database();
