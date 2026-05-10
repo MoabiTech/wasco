@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WASCO - Water & Sewerage Company | Lesotho</title>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/notifications.css">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -22,7 +24,8 @@
         <span>WASCO</span>
         <small>Water & Sewerage Company</small>
       </div>
-      <div class="nav-links" id="navLinks">
+        <div class="nav-links" id="navLinks">
+
         <a href="#" data-page="home" class="nav-link active">
           <i class="fas fa-home"></i> Home
         </a>
@@ -77,6 +80,7 @@
     <main id="mainContent">
       <!-- HOME PAGE -->
       <section id="page-home" class="page active">
+
         <div class="hero">
           <div class="hero-content">
             <h1>Welcome to WASCO</h1>
@@ -177,6 +181,21 @@
 
       <!-- DASHBOARD PAGE -->
       <section id="page-dashboard" class="page">
+        <!-- Customer Notification Bar -->
+
+        <div id="notificationBar" class="notification-bar" style="display:none;">
+          <div class="notification-bar-left">
+            <i class="fas fa-bell"></i>
+            <span><strong>Notifications</strong></span>
+          </div>
+          <div class="notification-bar-right">
+            <span id="notificationCount" class="badge badge-partial">0</span>
+            <button class="btn btn-outline btn-sm" onclick="navigateTo('notifications')">
+              View
+            </button>
+          </div>
+        </div>
+
         <div class="page-header">
           <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
           <p>Welcome back, <span id="dashboardUserName"></span></p>
@@ -239,8 +258,20 @@
         </div>
       </section>
 
+      <!-- NOTIFICATIONS PAGE -->
+      <section id="page-notifications" class="page">
+        <div class="page-header">
+          <h1><i class="fas fa-bell"></i> Notifications</h1>
+          <p>Your notifications from WASCO</p>
+        </div>
+        <div id="notificationsContent">
+          <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading notifications...</div>
+        </div>
+      </section>
+
       <!-- MANAGER/REPORTS PAGE -->
       <section id="page-manager" class="page">
+
         <div class="page-header">
           <h1><i class="fas fa-chart-bar"></i> Reports & Analytics</h1>
           <p>Water usage insights and financial reports</p>
@@ -378,10 +409,7 @@
             <div class="form-group">
               <label>Payment Method</label>
               <select id="payMethod" required>
-                <option value="mobile_money">Mobile Money (M-Pesa/EcoCash)</option>
-                <option value="bank_transfer">Bank Transfer</option>
-                <option value="online">Online/Card Payment</option>
-                <option value="cash">Cash</option>
+                <option value="paypal" selected>PayPal</option>
               </select>
             </div>
           </div>
@@ -420,6 +448,8 @@
     <div id="toastContainer" class="toast-container"></div>
   </div>
 
+  <script src="js/notifications.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
+
